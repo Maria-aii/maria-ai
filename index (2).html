@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мария Красношеина — AI-креатор</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --white: #FFFFFF;
+      --off: #F7F7F7;
+      --light: #EBEBEB;
+      --mid: #999999;
+      --dark: #333333;
+      --black: #111111;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 64px;
+      padding: 0 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--light);
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      color: var(--black);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-tg {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--black);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-tg:hover { color: var(--mid); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      border-bottom: 1px solid var(--light);
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 80px 48px 80px;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(44px, 5.5vw, 88px);
+      font-weight: 400;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 40px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--mid);
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 6px;
+    }
+
+    .hero-bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .hero-desc {
+      max-width: 360px;
+      color: var(--mid);
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--black);
+      color: var(--white);
+      text-decoration: none;
+      padding: 14px 28px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .hero-cta:hover { background: var(--dark); }
+
+    .hero-video-wrap {
+      position: relative;
+      overflow: hidden;
+      border-left: 1px solid var(--light);
+    }
+
+    .hero-video-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-video-placeholder {
+      width: 100%;
+      height: 100%;
+      min-height: 500px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: var(--off);
+      color: var(--mid);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .hero-video-placeholder svg { width: 32px; height: 32px; opacity: 0.3; }
+
+    /* ── SECTION COMMON ── */
+    .section {
+      padding: 80px 48px;
+      border-bottom: 1px solid var(--light);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 48px;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 400;
+      line-height: 1.1;
+    }
+
+    .section-desc {
+      max-width: 360px;
+      font-size: 0.88rem;
+      color: var(--mid);
+      line-height: 1.8;
+      padding-top: 6px;
+    }
+
+    /* ── CAROUSEL ── */
+    .carousel-wrap {
+      position: relative;
+    }
+
+    .carousel {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      cursor: grab;
+    }
+    .carousel:active { cursor: grabbing; }
+    .carousel::-webkit-scrollbar { display: none; }
+
+    .carousel-item {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      background: var(--off);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 3:4 ratio across all carousels */
+    .carousel--marketplace .carousel-item { width: 300px; height: 400px; }
+    .carousel--infographic .carousel-item { width: 300px; height: 400px; }
+    .carousel--cartoon .carousel-item    { width: 300px; height: 400px; }
+    .carousel--video .carousel-item      { width: 300px; height: 400px; }
+
+    .carousel-item img,
+    .carousel-item video {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .carousel-item:hover img,
+    .carousel-item:hover video { transform: scale(1.03); }
+
+    /* placeholder */
+    .c-placeholder {
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--light);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1px dashed var(--light);
+    }
+    .c-placeholder svg { width: 28px; height: 28px; opacity: 0.5; }
+
+    /* nav dots */
+    .carousel-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 20px;
+    }
+
+    .carousel-btn {
+      width: 36px; height: 36px;
+      background: none;
+      border: 1px solid var(--light);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--black);
+      transition: background 0.15s, border-color 0.15s;
+      flex-shrink: 0;
+    }
+    .carousel-btn:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+    .carousel-btn svg { width: 14px; height: 14px; }
+
+    .carousel-dots {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .carousel-dot {
+      width: 6px; height: 6px;
+      background: var(--light);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.2s;
+      border: none;
+      padding: 0;
+    }
+    .carousel-dot.active { background: var(--black); }
+
+    /* ── ABOUT ── */
+    .about {
+      padding: 80px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      border-bottom: 1px solid var(--light);
+    }
+
+    .about-photo {
+      aspect-ratio: 3/4;
+      background: var(--off);
+      overflow: hidden;
+    }
+    .about-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .about-photo-placeholder {
+      width: 100%; height: 100%; min-height: 400px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px; color: var(--light);
+      font-size: 0.7rem; letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1px dashed var(--light);
+    }
+
+    .about-content h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 400;
+      line-height: 1.05;
+      margin-bottom: 24px;
+    }
+    .about-content h2 em { font-style: italic; color: var(--mid); }
+
+    .about-content p {
+      color: var(--mid);
+      font-size: 0.92rem;
+      line-height: 1.9;
+      margin-bottom: 14px;
+    }
+
+    .about-tg {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 28px;
+      padding: 13px 24px;
+      border: 1px solid var(--black);
+      color: var(--black);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .about-tg:hover { background: var(--black); color: var(--white); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 24px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer p { font-size: 0.78rem; color: var(--mid); }
+    footer a { font-size: 0.78rem; color: var(--black); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; }
+    footer a:hover { color: var(--mid); }
+
+    /* ── FADE IN ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav, footer { padding: 0 24px; }
+      nav { height: 56px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-video-wrap { border-left: none; border-top: 1px solid var(--light); height: 400px; }
+      .hero-left { padding: 80px 24px 48px; }
+      .section { padding-left: 24px; padding-right: 24px; }
+      .about { grid-template-columns: 1fr; gap: 40px; padding: 60px 24px; }
+    }
+    @media (max-width: 600px) {
+      .hero-left { padding: 80px 20px 40px; }
+      .hero-video-wrap { height: 300px; }
+      .section { padding: 60px 20px; }
+      nav { padding: 0 20px; }
+      footer { padding: 20px; }
+      .carousel--marketplace .carousel-item { width: 240px; height: 320px; }
+      .carousel--infographic .carousel-item { width: 240px; height: 320px; }
+      .carousel--cartoon .carousel-item    { width: 240px; height: 320px; }
+      .carousel--video .carousel-item      { width: 240px; height: 320px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">AI-креатор. Мария Красношеина</a>
+  <a class="nav-tg" href="https://t.me/gorkavaiia" target="_blank">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 1 0 24 12 12 12 0 0 0 11.944 0zm3.93 7.555-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.182 13.4l-2.967-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.953.493z"/></svg>
+    Написать
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <h1>Быстрые визуальные<br><em>ИИ-решения</em><br>для бизнеса</h1>
+    <div class="hero-bottom">
+      <p class="hero-desc">Генерация профессионального контента с помощью искусственного интеллекта: от карточек товаров до анимации и видео.</p>
+      <a class="hero-cta" href="https://t.me/gorkavaiia" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 1 0 24 12 12 12 0 0 0 11.944 0zm3.93 7.555-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.182 13.4l-2.967-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.953.493z"/></svg>
+        Обсудить проект
+      </a>
+    </div>
+  </div>
+  <div class="hero-video-wrap">
+    <video src="video916.mov" autoplay muted loop playsinline></video>
+  </div>
+</section>
+
+<!-- SECTION 1: Маркетплейсы -->
+<section class="section fade-in" id="marketplace">
+  <div class="section-head">
+    <div>
+      <p class="section-label">01</p>
+      <h2 class="section-title">AI-фото для<br>маркетплейсов</h2>
+    </div>
+    <p class="section-desc">Карточки товаров для Wildberries, Ozon, Яндекс Маркет. Упаковка и предметная съёмка — без фотостудии.</p>
+  </div>
+  <div class="carousel-wrap">
+    <div class="carousel carousel--marketplace" id="c1">
+      <!-- СЛОТ 1 -->
+      <div class="carousel-item">
+         <img src="market1.png" alt="">
+      </div>
+      <!-- СЛОТ 2 -->
+      <div class="carousel-item">
+       <img src="market2.png" alt="">
+      </div>
+      <!-- СЛОТ 3 -->
+      <div class="carousel-item">
+<img src="market3.png" alt="">
+      </div>
+      <!-- СЛОТ 4 -->
+      <div class="carousel-item">
+<img src="market4.png" alt="">
+      </div>
+      <!-- СЛОТ 5 -->
+      <div class="carousel-item">
+<img src="market5.png" alt="">
+      </div>
+      <!-- СЛОТ 6 -->
+      <div class="carousel-item">
+<img src="market6.png" alt="">
+      </div>
+      <!-- СЛОТ 7 -->
+      <div class="carousel-item">
+<img src="market7.jpg" alt="">
+      </div>
+      <!-- СЛОТ 8 -->
+      <div class="carousel-item">
+<img src="market8.png" alt="">
+      </div>
+    </div>
+    <div class="carousel-nav">
+      <button class="carousel-btn" onclick="scrollCarousel('c1',-1)" aria-label="Назад">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="carousel-btn" onclick="scrollCarousel('c1',1)" aria-label="Вперёд">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+      <div class="carousel-dots" id="dots-c1"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: Инфографика -->
+<section class="section fade-in" id="infographic">
+  <div class="section-head">
+    <div>
+      <p class="section-label">02</p>
+      <h2 class="section-title">Инфографики</h2>
+    </div>
+    <p class="section-desc">Схемы, диаграммы, инфографики для маркетплейсов, соцсетей и сайтов.</p>
+  </div>
+  <div class="carousel-wrap">
+    <div class="carousel carousel--infographic" id="c2">
+      <div class="carousel-item">
+        <img src="info1.png" alt="">
+      </div>
+      <div class="carousel-item">
+<img src="info2.jpg" alt="">
+      </div>
+      <div class="carousel-item">
+<img src="info3.jpg" alt="">
+      </div>
+    </div>
+    <div class="carousel-nav">
+      <button class="carousel-btn" onclick="scrollCarousel('c2',-1)" aria-label="Назад">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="carousel-btn" onclick="scrollCarousel('c2',1)" aria-label="Вперёд">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+      <div class="carousel-dots" id="dots-c2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: Мультфильмы -->
+<section class="section fade-in" id="cartoon">
+  <div class="section-head">
+    <div>
+      <p class="section-label">03</p>
+      <h2 class="section-title">Мультфильмы</h2>
+    </div>
+    <p class="section-desc">Анимированные истории и персонажи — для брендов, детских проектов, образовательного контента.</p>
+  </div>
+  <div class="carousel-wrap">
+    <div class="carousel carousel--cartoon" id="c3">
+      <div class="carousel-item">
+        <video src="cartoon1.mp4" autoplay muted loop playsinline></video>
+      </div>
+      <div class="carousel-item">
+<img src="cartoon1.jpg" alt="">
+      </div>
+      <div class="carousel-item">
+<video src="cartoon2.mp4" autoplay muted loop playsinline></video>
+      </div>
+      <div class="carousel-item">
+<img src="cartoon2.jfif" alt="">
+      </div>
+    </div>
+    <div class="carousel-nav">
+      <button class="carousel-btn" onclick="scrollCarousel('c3',-1)" aria-label="Назад">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="carousel-btn" onclick="scrollCarousel('c3',1)" aria-label="Вперёд">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+      <div class="carousel-dots" id="dots-c3"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: Видео и анимация -->
+<section class="section fade-in" id="video">
+  <div class="section-head">
+    <div>
+      <p class="section-label">04</p>
+      <h2 class="section-title">Видео<br>и анимация</h2>
+    </div>
+    <p class="section-desc">Рекламные ролики, продуктовые видео, моушн-графика. AI-анимация нового поколения.</p>
+  </div>
+  <div class="carousel-wrap">
+    <div class="carousel carousel--video" id="c4">
+      <div class="carousel-item">
+       <video src="video1.mp4" autoplay muted loop playsinline></video>
+      </div>
+      <div class="carousel-item">
+<video src="video2.mp4" autoplay muted loop playsinline></video>
+      </div>
+      <div class="carousel-item">
+<video src="video3.mp4" autoplay muted loop playsinline></video>
+      </div>
+      <div class="carousel-item">
+<video src="video4.mp4" autoplay muted loop playsinline></video>
+      </div>
+    </div>
+    <div class="carousel-nav">
+      <button class="carousel-btn" onclick="scrollCarousel('c4',-1)" aria-label="Назад">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="carousel-btn" onclick="scrollCarousel('c4',1)" aria-label="Вперёд">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+      <div class="carousel-dots" id="dots-c4"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about fade-in">
+  <div class="about-photo">
+    <img src="me.png" alt="Мария Красношеина">
+  </div>
+  <div class="about-content">
+    <h2>Привет,<br>я <em>Мария</em></h2>
+    <p>AI-креатор с фокусом на визуальный контент. Работаю на стыке технологий и творчества — создаю то, что раньше требовало большой команды и месяцев работы.</p>
+    <p>Карточки товаров, инфографика, анимация, мультфильмы и видео — всё с помощью современных AI-инструментов, быстро и с вниманием к деталям.</p>
+    <p>Если нужен контент, который выделяется — напишите мне.</p>
+    <a class="about-tg" href="https://t.me/gorkavaiia" target="_blank">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 1 0 24 12 12 12 0 0 0 11.944 0zm3.93 7.555-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.182 13.4l-2.967-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.953.493z"/></svg>
+      Написать в Telegram
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Мария Красношеина</p>
+  <a href="https://t.me/gorkavaiia" target="_blank">Telegram</a>
+</footer>
+
+<script>
+  // ── CAROUSEL LOGIC ──
+  function initCarousel(id) {
+    const el = document.getElementById(id);
+    const dotsWrap = document.getElementById('dots-' + id);
+    const items = el.querySelectorAll('.carousel-item');
+    const count = items.length;
+
+    // Build dots
+    for (let i = 0; i < count; i++) {
+      const d = document.createElement('button');
+      d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'Слайд ' + (i+1));
+      d.addEventListener('click', () => {
+        items[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+      });
+      dotsWrap.appendChild(d);
+    }
+
+    // Update dots on scroll
+    el.addEventListener('scroll', () => {
+      const scrollLeft = el.scrollLeft;
+      const itemW = items[0].offsetWidth + 12;
+      const idx = Math.round(scrollLeft / itemW);
+      dotsWrap.querySelectorAll('.carousel-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === idx);
+      });
+    });
+
+    // Drag to scroll
+    let isDown = false, startX, scrollStart;
+    el.addEventListener('mousedown', e => { isDown = true; startX = e.pageX - el.offsetLeft; scrollStart = el.scrollLeft; el.style.cursor = 'grabbing'; });
+    el.addEventListener('mouseleave', () => { isDown = false; el.style.cursor = 'grab'; });
+    el.addEventListener('mouseup', () => { isDown = false; el.style.cursor = 'grab'; });
+    el.addEventListener('mousemove', e => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - el.offsetLeft;
+      el.scrollLeft = scrollStart - (x - startX);
+    });
+  }
+
+  function scrollCarousel(id, dir) {
+    const el = document.getElementById(id);
+    const item = el.querySelector('.carousel-item');
+    const step = item.offsetWidth + 12;
+    el.scrollBy({ left: dir * step, behavior: 'smooth' });
+  }
+
+  ['c1','c2','c3','c4'].forEach(initCarousel);
+
+  // ── FADE IN ON SCROLL ──
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
